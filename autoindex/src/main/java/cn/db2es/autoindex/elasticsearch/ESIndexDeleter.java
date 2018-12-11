@@ -21,14 +21,10 @@ public class ESIndexDeleter {
         try {
             DeleteIndexRequest request = new DeleteIndexRequest(indexName);
             client.indices().delete(request, RequestOptions.DEFAULT);
-        } catch (ElasticsearchException exception) {
-            if (exception.status() == RestStatus.NOT_FOUND) {
-                log.error("delete index error! " + indexName + " not exists!");
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage(), e.fillInStackTrace());
-        } finally {
             return Result.Success();
+        } catch (IOException e) {
+            log.error(e.toString());
+            return Result.Fail("Delete index " + indexName + " error! " + e.toString());
         }
     }
 }
