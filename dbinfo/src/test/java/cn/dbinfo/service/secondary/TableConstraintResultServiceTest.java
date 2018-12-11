@@ -19,17 +19,12 @@ public class TableConstraintResultServiceTest {
         String database = "nx_government_data_2018";
         String table = "invest_bid_company";
 
-        List<Object[]> fks = tableConstraintResultService.findFkByDatabaseAndTable(database, table);
-
-        fks.forEach(fk -> System.out.println(fk[0].toString() + " " + fk[1].toString() + " " + fk[2].toString()));
     }
 
     @Test
     public void findPKByDatabaseAndTableTest() {
         String database = "nx_government_data_2018";
         String table = "invest_bid_company";
-        List<Object> pks = tableConstraintResultService.findPKByDatabaseAndTable(database, table);
-        pks.forEach(pk -> System.out.println(pk.toString()));
     }
 
 }
