@@ -28,19 +28,18 @@ public class ESIndexCreator {
     @Autowired
     private RestHighLevelClient client;
 
+    /**
+     * 创建Elasticsearch索引
+     * @param indexInfo
+     * @return
+     */
     public Result create(IndexInfo indexInfo)  {
+        // 防止fastjson将浮点类型自动转化为BigDecimal
         JSON.DEFAULT_PARSER_FEATURE &= ~Feature.UseBigDecimal.getMask();
+
         String indexName = indexInfo.getIndexName();
         List<IndexField> indexFields = indexInfo.getIndexFields();
-        boolean exists = false;
-        try {
-            exists = client.indices().exists(new GetIndexRequest().indices(indexName), RequestOptions.DEFAULT);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (exists) {
-            return Result.Fail("The index " + indexName + " has already exists");
-        }
+
         CreateIndexRequest request = new CreateIndexRequest(indexInfo.getIndexName());
 
 //        request.settings(Settings.builder()
@@ -49,13 +48,24 @@ public class ESIndexCreator {
 //        );
 
         try {
+            boolean exists = client.indices().exists(new GetIndexRequest().indices(indexName), RequestOptions.DEFAULT);
+            if (exists) {
+                return Result.Fail("The index " + indexName + " has already exists");
+            }
+
             request.mapping("_doc", buildIndexMapping(indexInfo.getIndexFields()));
+            log.debug("The mapping of " + indexName + " is : " + request.mappings());
             CreateIndexResponse response = client.indices().create(request, RequestOptions.DEFAULT);
-            assert(response.isAcknowledged());
+
+            if (!response.isAcknowledged()) {
+                return Result.Fail("Create Elasticsearch Index Fail! " + request.mappings());
+            }
+            return Result.Success(response.index());
+
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Create Elasticsearch Index Fail! " + e.toString());
+            return Result.Fail("Create Elasticsearch Index Fail! " + e.toString());
         }
-        return Result.Success();
     }
 
     private XContentBuilder buildIndexMapping(List<IndexField> indexFields) throws IOException {
