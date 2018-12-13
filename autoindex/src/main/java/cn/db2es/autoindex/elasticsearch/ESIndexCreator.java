@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @Slf4j
@@ -48,14 +47,15 @@ public class ESIndexCreator {
 //        );
 
         try {
-            boolean exists = client.indices().exists(new GetIndexRequest().indices(indexName), RequestOptions.DEFAULT);
+            boolean exists = client.indices().exists(new GetIndexRequest().indices(indexName));
             if (exists) {
                 return Result.Fail("The index " + indexName + " has already exists");
             }
 
             request.mapping("_doc", buildIndexMapping(indexInfo.getIndexFields()));
             log.debug("The mapping of " + indexName + " is : " + request.mappings());
-            CreateIndexResponse response = client.indices().create(request, RequestOptions.DEFAULT);
+//            CreateIndexResponse response = client.indices().create(request, RequestOptions.DEFAULT);
+            CreateIndexResponse response = client.indices().create(request);
 
             if (!response.isAcknowledged()) {
                 return Result.Fail("Create Elasticsearch Index Fail! " + request.mappings());

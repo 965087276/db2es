@@ -9,9 +9,11 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.rest.RestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 @Slf4j
 public class ESIndexDeleter {
     @Autowired
@@ -20,7 +22,8 @@ public class ESIndexDeleter {
     public Result delete(String indexName) {
         try {
             DeleteIndexRequest request = new DeleteIndexRequest(indexName);
-            client.indices().delete(request, RequestOptions.DEFAULT);
+//            client.indices().delete(request, RequestOptions.DEFAULT);
+            client.indices().delete(request);
             return Result.Success();
         } catch (IOException e) {
             log.error(e.toString());

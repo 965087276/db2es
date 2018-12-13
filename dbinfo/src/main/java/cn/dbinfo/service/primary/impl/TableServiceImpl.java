@@ -8,6 +8,7 @@ import cn.dbinfo.util.Result;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class TableServiceImpl implements TableService {
     @Autowired IndexFieldService indexFieldService;
 
     @Override
+    @Transactional
     public Result deleteTable(TableInfo tableInfo) {
         // 判断该表是否被别的表参照(根据该索引更新是否关联别的索引来判断)
         IndexInfo indexInfo = tableInfo.getIndexInfo();
@@ -84,7 +86,7 @@ public class TableServiceImpl implements TableService {
         }
         for (JSONObject fk : fks) {
             TableConstraint tableConstraint = new TableConstraint();
-            tableConstraint.setName(fk.getString("column_name"));
+            tableConstraint.setName(fk.getString("pk_column"));
             tableConstraint.setTableInfo(tableInfo);
             tableConstraint.setType(TableConstraint.FOREIGN_KEY);
             tableConstraint.setFkDatabase(fk.getString("referenced_database"));

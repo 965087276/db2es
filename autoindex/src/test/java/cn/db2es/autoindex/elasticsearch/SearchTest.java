@@ -30,7 +30,7 @@ public class SearchTest {
         searchSourceBuilder.query(QueryBuilders.matchAllQuery());
         searchSourceBuilder.size(1);
         searchRequest.source(searchSourceBuilder);
-        SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+        SearchResponse searchResponse = client.search(searchRequest);
         SearchHits hits = searchResponse.getHits();
         hits.forEach(hit -> System.out.println(JSONObject.parse(hit.getSourceAsString())));
     }
