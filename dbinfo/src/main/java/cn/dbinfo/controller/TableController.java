@@ -1,6 +1,6 @@
 package cn.dbinfo.controller;
 
-import cn.dbinfo.pojo.primary.TableInfo;
+import cn.db2es.common.pojo.primary.TableInfo;
 import cn.dbinfo.service.primary.*;
 import cn.dbinfo.service.secondary.ColumnResultService;
 import cn.dbinfo.service.secondary.TableConstraintResultService;

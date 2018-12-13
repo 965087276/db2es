@@ -1,4 +1,4 @@
-package cn.dbinfo.pojo.secondary;
+package cn.db2es.common.pojo.secondary;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package cn.dbinfo.service.primary.impl;
 
 import cn.dbinfo.dao.primary.TableInfoDAO;
-import cn.dbinfo.pojo.primary.IndexInfo;
-import cn.dbinfo.pojo.primary.TableInfo;
+import cn.db2es.common.pojo.primary.IndexInfo;
+import cn.db2es.common.pojo.primary.TableInfo;
 import cn.dbinfo.service.primary.TableInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -4,11 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.ict.db2es</groupId>
-    <artifactId>autoindex</artifactId>
+    <artifactId>common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <name>autoindex</name>
+    <name>db2es-common</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
@@ -17,19 +15,5 @@
         <version>1.0-SNAPSHOT</version>
         <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
     </parent>
-
-    <dependencies>
-        <dependency>
-            <groupId>cn.ict.db2es</groupId>
-            <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>${elasticsearch-high-rest-client.version}</version>
-        </dependency>
-    </dependencies>
-
 
 </project>

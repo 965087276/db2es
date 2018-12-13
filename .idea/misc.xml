@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/db2es-registry/pom.xml" />
         <option value="$PROJECT_DIR$/autoindex/pom.xml" />
         <option value="$PROJECT_DIR$/autologstash/pom.xml" />
+        <option value="$PROJECT_DIR$/db2es-common/pom.xml" />
       </list>
     </option>
   </component>

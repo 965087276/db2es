@@ -1,8 +1,8 @@
 package cn.dbinfo.service.primary.impl;
 
 import cn.dbinfo.dao.primary.TableConstraintDAO;
-import cn.dbinfo.pojo.primary.TableConstraint;
-import cn.dbinfo.pojo.primary.TableInfo;
+import cn.db2es.common.pojo.primary.TableConstraint;
+import cn.db2es.common.pojo.primary.TableInfo;
 import cn.dbinfo.service.primary.TableConstraintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

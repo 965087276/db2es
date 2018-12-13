@@ -16,7 +16,11 @@
     <description>Demo project for Spring Boot</description>
 
     <dependencies>
-
+        <dependency>
+            <groupId>cn.ict.db2es</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

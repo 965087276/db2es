@@ -42,7 +42,7 @@ public class SecondaryConfig {
         return builder
                 .dataSource(secondaryDataSource)
                 .properties(jpaProperties.getProperties())
-                .packages("cn.dbinfo.pojo.secondary")
+                .packages("cn.db2es.common.pojo.secondary")
                 .persistenceUnit("primaryPersistenceUnit")
                 .build();
     }

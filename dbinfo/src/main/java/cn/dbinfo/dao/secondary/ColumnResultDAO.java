@@ -1,6 +1,6 @@
 package cn.dbinfo.dao.secondary;
 
-import cn.dbinfo.pojo.secondary.ColumnResult;
+import cn.db2es.common.pojo.secondary.ColumnResult;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

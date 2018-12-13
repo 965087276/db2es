@@ -1,6 +1,6 @@
 package cn.dbinfo.service.primary.impl;
 
-import cn.dbinfo.pojo.primary.*;
+import cn.db2es.common.pojo.primary.*;
 import cn.dbinfo.remote.AutoIndexRemote;
 import cn.dbinfo.service.primary.*;
 import cn.dbinfo.service.secondary.ColumnResultService;

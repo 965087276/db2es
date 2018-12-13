@@ -8,9 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="autoindex" />
         <module name="autologstash" />
+        <module name="db2es-common" />
         <module name="db2es-registry" />
         <module name="dbinfo" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="common" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

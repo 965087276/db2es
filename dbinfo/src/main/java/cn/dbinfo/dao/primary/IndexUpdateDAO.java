@@ -1,8 +1,8 @@
 package cn.dbinfo.dao.primary;
 
 
-import cn.dbinfo.pojo.primary.IndexInfo;
-import cn.dbinfo.pojo.primary.IndexUpdate;
+import cn.db2es.common.pojo.primary.IndexInfo;
+import cn.db2es.common.pojo.primary.IndexUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

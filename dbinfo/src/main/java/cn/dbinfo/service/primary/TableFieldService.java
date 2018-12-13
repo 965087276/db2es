@@ -1,7 +1,7 @@
 package cn.dbinfo.service.primary;
 
-import cn.dbinfo.pojo.primary.TableField;
-import cn.dbinfo.pojo.primary.TableInfo;
+import cn.db2es.common.pojo.primary.TableField;
+import cn.db2es.common.pojo.primary.TableInfo;
 
 import java.util.List;
 

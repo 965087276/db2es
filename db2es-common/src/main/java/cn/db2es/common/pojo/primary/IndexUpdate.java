@@ -1,4 +1,4 @@
-package cn.db2es.autoindex.pojo;
+package cn.db2es.common.pojo.primary;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -13,24 +13,19 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-@Table(name = "table_field")
+@Table(name = "index_update")
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
-public class TableField {
+public class IndexUpdate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "table_id")
+    @JoinColumn(name = "index_id")
     @NotFound(action = NotFoundAction.IGNORE)
-    private TableInfo tableInfo;
+    private IndexInfo indexInfo;
 
-    @ManyToOne
-    @JoinColumn(name = "index_field_id")
-    @NotFound(action = NotFoundAction.IGNORE)
-    private IndexField indexField;
-
-    private String name;
-    private String type;
+    @Column(name = "update_index")
+    private String updateIndex;
 }

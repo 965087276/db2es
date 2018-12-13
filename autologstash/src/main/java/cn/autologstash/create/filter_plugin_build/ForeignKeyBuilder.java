@@ -2,10 +2,8 @@ package cn.autologstash.create.filter_plugin_build;
 
 import cn.autologstash.config.LogstashConfig;
 import cn.autologstash.create.BaseBuilder;
-import cn.autologstash.pojo.IndexField;
-import cn.autologstash.pojo.TableConstraint;
-import cn.autologstash.pojo.TableInfo;
 import cn.autologstash.remote.DbinfoRemote;
+import cn.db2es.common.pojo.primary.IndexField;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package cn.dbinfo.service.primary;
 
-import cn.dbinfo.pojo.primary.IndexInfo;
+import cn.db2es.common.pojo.primary.IndexInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

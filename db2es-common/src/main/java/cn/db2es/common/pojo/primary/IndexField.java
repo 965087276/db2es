@@ -1,4 +1,4 @@
-package cn.autologstash.pojo;
+package cn.db2es.common.pojo.primary;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -16,7 +16,8 @@ import java.util.List;
 @Entity
 @Table(name = "index_field")
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
-public class IndexField implements Cloneable{
+public class
+IndexField implements Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

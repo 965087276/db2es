@@ -1,7 +1,7 @@
 package cn.dbinfo.service.primary;
 
-import cn.dbinfo.pojo.primary.IndexField;
-import cn.dbinfo.pojo.primary.IndexInfo;
+import cn.db2es.common.pojo.primary.IndexField;
+import cn.db2es.common.pojo.primary.IndexInfo;
 
 import java.util.List;
 

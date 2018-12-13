@@ -44,7 +44,7 @@ public class PrimaryConfig {
         return builder
                 .dataSource(primaryDataSource)
                 .properties(jpaProperties.getProperties())
-                .packages("cn.dbinfo.pojo.primary")
+                .packages("cn.db2es.common.pojo.primary")
                 .persistenceUnit("primaryPersistenceUnit")
                 .build();
     }

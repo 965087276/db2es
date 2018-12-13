@@ -1,6 +1,6 @@
 package cn.dbinfo.dao.secondary;
 
-import cn.dbinfo.pojo.secondary.TableConstraintResult;
+import cn.db2es.common.pojo.secondary.TableConstraintResult;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

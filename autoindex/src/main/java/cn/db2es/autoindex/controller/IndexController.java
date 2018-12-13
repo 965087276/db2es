@@ -2,9 +2,8 @@ package cn.db2es.autoindex.controller;
 
 import cn.db2es.autoindex.elasticsearch.ESIndexCreator;
 import cn.db2es.autoindex.elasticsearch.ESIndexDeleter;
-import cn.db2es.autoindex.pojo.IndexField;
-import cn.db2es.autoindex.pojo.IndexInfo;
 import cn.db2es.autoindex.util.Result;
+import cn.db2es.common.pojo.primary.IndexInfo;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
