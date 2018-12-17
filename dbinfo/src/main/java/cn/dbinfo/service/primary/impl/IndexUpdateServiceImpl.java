@@ -6,11 +6,12 @@ import cn.db2es.common.pojo.primary.IndexUpdate;
 import cn.dbinfo.service.primary.IndexUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class IndexUpdateServiceImpl implements IndexUpdateService {
@@ -34,9 +35,9 @@ public class IndexUpdateServiceImpl implements IndexUpdateService {
 
     @Override
     public List<String> findIndexHadFk() {
-        List<Object> indexNames = indexUpdateDAO.findIndexHadFk();
-        List<String> updates = new ArrayList<>();
-        indexNames.forEach(indexName -> updates.add((String)indexName));
-        return updates;
+        return indexUpdateDAO.findIndexHadFk()
+                .stream()
+                .map(Object::toString)
+                .collect(toList());
     }
 }

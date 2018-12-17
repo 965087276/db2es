@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import javax.xml.crypto.Data;
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 @Component("mapFileBuilder")
 public class MapFileBuilder extends BaseBuilder {
@@ -42,20 +45,18 @@ public class MapFileBuilder extends BaseBuilder {
         StringBuffer sb = new StringBuffer();
 
         for (IndexInfo indexInfo : indexInfos) {
-            boolean first = true;
             List<IndexUpdate> updates = dbinfoRemote.getUpdateByIndex(indexInfo.getIndexName());
             if (updates == null || updates.isEmpty()) continue;
-            for (IndexUpdate update : updates) {
-                if (first) {
-                    sb.append(indexInfo.getIndexName() + ": ");
-                    first = false;
-                }
-                else sb.append(",");
-                sb.append(update.getUpdateIndex());
-            }
-            sb.append("\n");
+            String row = indexInfo.getIndexName() + ": " +
+                    updates.stream()
+                            .map(IndexUpdate::getUpdateIndex)
+                            .collect(joining(","));
+            sb.append(row + "\n");
         }
-        String fileName = logstashConfig.getLogstashConfPath() + File.separator + folder + File.separator +
+        String fileName = logstashConfig.getLogstashConfPath() +
+                File.separator +
+                folder +
+                File.separator +
                 "index_update_mapping.yml";
         FileUtil.createFile(fileName, sb.toString(), "utf8");
 
@@ -77,22 +78,26 @@ public class MapFileBuilder extends BaseBuilder {
         String folder = "table_name_mapping";
         for (String database : databases) {
             List<TableInfo> tableInfos = dbinfoRemote.listByDatabaseName(database);
-            StringBuffer sb = new StringBuffer();
-            for (TableInfo tableInfo : tableInfos) {
-                if (tableInfo.getIndexInfo() == null) continue;
-                sb.append(tableInfo.getTableName() + ": " + tableInfo.getIndexInfo().getIndexName() + "\n");
-            }
-            String fileName = logstashConfig.getLogstashConfPath() + File.separator +
-                    folder + File.separator + database + ".yml";
-            FileUtil.createFile(fileName, sb.toString(), "utf8");
+            String sb = tableInfos.stream()
+                                  .filter(tableInfo -> tableInfo.getIndexInfo() != null)
+                                  .map(tableInfo -> tableInfo.getTableName() + ": " + tableInfo.getIndexInfo().getIndexName() + "\n")
+                                  .collect(Collectors.joining());
+            String fileName = logstashConfig.getLogstashConfPath() +
+                    File.separator + folder +
+                    File.separator +
+                    database + ".yml";
+            FileUtil.createFile(fileName, sb, "utf8");
         }
         // logstash 配置代码生成
         String sourceField = "[head][table]";
         String destField = "[@metadata][index_name]";
-        String fileName = logstashConfig.getLogstashConfPath() + File.separator + folder + File.separator +
-                "%{[head][db]}" + ".yml";
+        String fileName = logstashConfig.getLogstashConfPath() +
+                File.separator +
+                folder +
+                File.separator +
+                "%{[head][db]}.yml";
         String content = translateSimpleFormat(1, sourceField, destField, fileName);
-        content += indent(1) + "if [@metadata][index_name] == \"drop it\" { drop {} }\n";
+        content = content + (indent(1) + "if [@metadata][index_name] == \"drop it\" { drop {} }\n");
         return content;
     }
 
@@ -102,13 +107,16 @@ public class MapFileBuilder extends BaseBuilder {
     private String indexNameToIndexIdFileBuild() {
         List<IndexInfo> indexInfos = dbinfoRemote.listIndexInfo();
         String folder = "index_id_mapping";
-        StringBuffer sb = new StringBuffer();
-        for (IndexInfo indexInfo : indexInfos) {
-            sb.append(indexInfo.getIndexName() + ": " + indexInfo.getIdField() + "\n");
-        }
-        String fileName = logstashConfig.getLogstashConfPath() + File.separator + folder + File.separator +
+        String sb = indexInfos.stream()
+                              .map(indexInfo -> indexInfo.getIndexName() + ": " + indexInfo.getIdField() + "\n")
+                              .collect(Collectors.joining());
+        String fileName = logstashConfig.getLogstashConfPath() +
+                File.separator +
+                folder +
+                File.separator +
                 "index_id_mapping.yml";
-        FileUtil.createFile(fileName, sb.toString(), "utf8");
+
+        FileUtil.createFile(fileName, sb, "utf8");
         String sourceField = "[@metadata][index_name]";
         String destField = "[@metadata][index_id]";
         String content = translateSimpleFormat(1, sourceField, destField, fileName);
@@ -126,26 +134,38 @@ public class MapFileBuilder extends BaseBuilder {
             for (TableInfo tableInfo : tableInfos) {
                 StringBuffer sb = new StringBuffer();
                 List<TableField> tableFields = tableInfo.getTableFields();
-                tableFields.forEach(tableField -> {
+                for (TableField tableField : tableFields) {
                     sb.append(tableField.getName() + ": " + tableField.getIndexField().getName() + "\n");
-                });
-                String fileName = logstashConfig.getLogstashConfPath() + File.separator + folder + File.separator +
-                        database + File.separator + tableInfo.getTableName() + ".yml";
+                }
+                String fileName = logstashConfig.getLogstashConfPath() +
+                        File.separator +
+                        folder +
+                        File.separator +
+                        database +
+                        File.separator +
+                        tableInfo.getTableName() +
+                        ".yml";
                 FileUtil.createFile(fileName, sb.toString(), "utf8");
             }
         }
 
         // 生成logstash配置代码
         StringBuffer sb = new StringBuffer();
-        String fileName = logstashConfig.getLogstashConfPath() + File.separator + folder + File.separator +
-                "%{[head][db]}" + File.separator + "%{[head][table]}" + ".yml";
-        sb.append(indent(1) + "if [after] {" + "\n");
-        sb.append(translateMultiFormat(2, "[after]", fileName));
-        sb.append(indent(1) + "}" + "\n");
-        sb.append(indent(1) + "else {" + "\n");
-        sb.append(translateMultiFormat(2, "[before]", fileName));
-        sb.append(indent(1) + "}" + "\n");
+        String fileName = logstashConfig.getLogstashConfPath() +
+                File.separator +
+                folder +
+                File.separator +
+                "%{[head][db]}" +
+                File.separator +
+                "%{[head][table]}" +
+                ".yml";
 
+        sb.append(indent(1) + "if [after] {" + "\n")
+          .append(translateMultiFormat(2, "[after]", fileName))
+          .append(indent(1) + "}" + "\n")
+          .append(indent(1) + "else {" + "\n")
+          .append(translateMultiFormat(2, "[before]", fileName))
+          .append(indent(1) + "}" + "\n");
         return sb.toString();
     }
 

@@ -35,7 +35,7 @@ public class TableServiceImpl implements TableService {
         if (indexUpdates != null && !indexUpdates.isEmpty()) {
             List<String> indexes = indexUpdates
                     .stream()
-                    .map(indexUpdate -> indexUpdate.getUpdateIndex())
+                    .map(IndexUpdate::getUpdateIndex)
                     .collect(Collectors.toList());
             return Result.Fail("Some indexes reference this table! " + indexes.toString());
         }
@@ -69,37 +69,53 @@ public class TableServiceImpl implements TableService {
         tableInfo.setDatabaseName(databaseName);
         tableInfo.setTableName(tableName);
 
-        for (JSONObject column : columnAndType) {
-            TableField tableField = new TableField();
-            tableField.setName(column.getString("column_name"));
-            tableField.setType(column.getString("column_type"));
-            tableField.setTableInfo(tableInfo);
-            tableField.setIndexField(indexFieldService.findByIndexInfoAndTableField(indexInfo, tableField.getName()));
-            tableFields.add(tableField);
-        }
-        for (String pk : pks) {
-            TableConstraint tableConstraint = new TableConstraint();
-            tableConstraint.setTableInfo(tableInfo);
-            tableConstraint.setName(pk);
-            tableConstraint.setType(TableConstraint.PRIMARY_KEY);
-            tableConstraints.add(tableConstraint);
-        }
-        for (JSONObject fk : fks) {
-            TableConstraint tableConstraint = new TableConstraint();
-            tableConstraint.setName(fk.getString("pk_column"));
-            tableConstraint.setTableInfo(tableInfo);
-            tableConstraint.setType(TableConstraint.FOREIGN_KEY);
-            tableConstraint.setFkDatabase(fk.getString("referenced_database"));
-            tableConstraint.setFkTable(fk.getString("referenced_table"));
-            tableConstraint.setFkField(fk.getString("referenced_column"));
-            tableConstraints.add(tableConstraint);
-        }
+        tableFields.addAll(columnAndType.stream()
+                                        .map(column -> setTableField(column, tableInfo, indexInfo))
+                                        .collect(Collectors.toList()));
+
+        tableConstraints.addAll(pks.stream()
+                                   .map(pk -> setPrimaryKey(pk, tableInfo))
+                                   .collect(Collectors.toList()));
+
+        tableConstraints.addAll(fks.stream()
+                                   .map(fk -> setForeignKey(fk, tableInfo))
+                                   .collect(Collectors.toList()));
+
 
         tableInfoService.add(tableInfo);
         tableFieldService.addAll(tableFields);
         tableConstraintService.addAll(tableConstraints);
 
         return Result.Success(tableFields);
+    }
+
+
+    private TableConstraint setForeignKey(JSONObject fk, TableInfo tableInfo) {
+        TableConstraint tableConstraint = new TableConstraint();
+        tableConstraint.setName(fk.getString("pk_column"));
+        tableConstraint.setTableInfo(tableInfo);
+        tableConstraint.setType(TableConstraint.FOREIGN_KEY);
+        tableConstraint.setFkDatabase(fk.getString("referenced_database"));
+        tableConstraint.setFkTable(fk.getString("referenced_table"));
+        tableConstraint.setFkField(fk.getString("referenced_column"));
+        return tableConstraint;
+    }
+
+    private TableConstraint setPrimaryKey(String pk, TableInfo tableInfo) {
+        TableConstraint tableConstraint = new TableConstraint();
+        tableConstraint.setTableInfo(tableInfo);
+        tableConstraint.setName(pk);
+        tableConstraint.setType(TableConstraint.PRIMARY_KEY);
+        return tableConstraint;
+    }
+
+    private TableField setTableField(JSONObject column, TableInfo tableInfo, IndexInfo indexInfo) {
+        TableField tableField = new TableField();
+        tableField.setName(column.getString("column_name"));
+        tableField.setType(column.getString("column_type"));
+        tableField.setTableInfo(tableInfo);
+        tableField.setIndexField(indexFieldService.findByIndexInfoAndTableField(indexInfo, tableField.getName()));
+        return tableField;
     }
 
     private Result judgeDataLegal(String databaseName, String tableName, List<JSONObject> columns, List<String> pks) {

@@ -4,29 +4,22 @@ import cn.dbinfo.dao.secondary.TableConstraintResultDAO;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class TableConstraintResultService {
     @Autowired
     private TableConstraintResultDAO tableConstraintResultDAO;
 
-//    public List<Object> findPKByDatabaseAndTable(String database, String table) {
-//        return tableConstraintResultDAO.findPKByDatabaseAndTable(database, table);
-//    }
-//
-//    public List<Object[]> findFkByDatabaseAndTable(String database, String table) {
-//        return tableConstraintResultDAO.findFkByDatabaseAndTable(database, table);
-//    }
-
     public List<String> findPKByDatabaseAndTable(String database, String table) {
-        List<Object> pkObjects = tableConstraintResultDAO.findPKByDatabaseAndTable(database, table);
-        List<String> pks = new ArrayList<>();
-        pkObjects.forEach(pkObject -> pks.add(pkObject.toString()));
-        return pks;
+        return tableConstraintResultDAO.findPKByDatabaseAndTable(database, table)
+                .stream()
+                .map(Object::toString)
+                .collect(toList());
     }
 
     public List<JSONObject> findFkByDatabaseAndTable(String database, String table) {

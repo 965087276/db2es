@@ -15,6 +15,7 @@
       <module>db2es-registry</module>
       <module>autoindex</module>
       <module>autologstash</module>
+      <module>db2es-common</module>
   </modules>
 
     <parent>

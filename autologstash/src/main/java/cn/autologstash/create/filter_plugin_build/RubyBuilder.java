@@ -1,8 +1,6 @@
 package cn.autologstash.create.filter_plugin_build;
 
 import cn.autologstash.create.BaseBuilder;
-import cn.autologstash.remote.DbinfoRemote;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component("rubyBuilder")

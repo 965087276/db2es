@@ -12,16 +12,16 @@ public class InputPluginBuilder extends BaseBuilder {
 
     @Override
     public String build() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(indent(0) + "input {" + "\n");
-        sb.append(indent(1) + "kafka {" + "\n");
-        sb.append(indent(2) + "topics => [\"" + config.getKafkaTopic() + "\"]" + "\n");
-        sb.append(indent(2) + "bootstrap_servers => \"" + config.getKafkaServer() + "\"" + "\n");
-        sb.append(indent(2) + "auto_offset_reset => \"latest\"" + "\n");
-        sb.append(indent(2) + "consumer_threads => " + config.getConsumerThreads() + "\n");
-        sb.append(indent(2) + "codec => \"json\"" + "\n");
-        sb.append(indent(1) + "}" + "\n");
-        sb.append(indent(0) + "}" + "\n");
+        StringBuilder sb = new StringBuilder()
+                .append(indent(0) + "input {" + "\n")
+                .append(indent(1) + "kafka {" + "\n")
+                .append(indent(2) + "topics => [\"" + config.getKafkaTopic() + "\"]" + "\n")
+                .append(indent(2) + "bootstrap_servers => \"" + config.getKafkaServer() + "\"" + "\n")
+                .append(indent(2) + "auto_offset_reset => \"latest\"" + "\n")
+                .append(indent(2) + "consumer_threads => " + config.getConsumerThreads() + "\n")
+                .append(indent(2) + "codec => \"json\"" + "\n")
+                .append(indent(1) + "}" + "\n")
+                .append(indent(0) + "}" + "\n");
         return sb.toString();
     }
 }

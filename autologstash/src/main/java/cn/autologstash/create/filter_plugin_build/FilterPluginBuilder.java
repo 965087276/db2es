@@ -17,11 +17,11 @@ public class FilterPluginBuilder extends BaseBuilder {
     @Override
     public String build() {
         StringBuffer sb = new StringBuffer();
-        sb.append("filter {" + "\n");
-            sb.append(mapFileBuilder.build());
-            sb.append(rubyBuilder.build());
-            sb.append(foreignKeyBuilder.build());
-        sb.append("}" + "\n");
+        sb.append("filter {" + "\n")
+                .append(mapFileBuilder.build())
+                .append(rubyBuilder.build())
+                .append(foreignKeyBuilder.build())
+                .append("}" + "\n");
         return sb.toString();
     }
 

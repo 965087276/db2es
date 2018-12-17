@@ -1,7 +1,6 @@
 package cn.autologstash.controller;
 
 import cn.autologstash.create.LogstashConfCreate;
-import cn.autologstash.create.filter_plugin_build.MapFileBuilder;
 import cn.autologstash.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
