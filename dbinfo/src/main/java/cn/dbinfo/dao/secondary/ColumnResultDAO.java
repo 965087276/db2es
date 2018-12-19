@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ColumnResultDAO extends JpaRepository<ColumnResult, String> {
-    @Query(value = "select COLUMNS.COLUMN_NAME, COLUMNS.DATA_TYPE from COLUMNS where COLUMNS.TABLE_SCHEMA = ?1 and COLUMNS.TABLE_NAME = ?2", nativeQuery = true)
+    @Query(value = "select COLUMNS.COLUMN_NAME, COLUMNS.COLUMN_TYPE , COLUMNS.COLUMN_COMMENT from COLUMNS where COLUMNS.TABLE_SCHEMA = ?1 and COLUMNS.TABLE_NAME = ?2", nativeQuery = true)
     List<Object[]> findByDatabaseAndTable(String database, String table);
 
     @Query(value = "select distinct COLUMNS.TABLE_NAME from COLUMNS where COLUMNS.TABLE_SCHEMA = ?1", nativeQuery = true)
